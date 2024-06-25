@@ -1,4 +1,5 @@
-const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+// Initialize with an empty array
+const transactions = []; 
 
 const formatter = new Intl.NumberFormat("en-IN", {
   style: "currency",
@@ -6,6 +7,7 @@ const formatter = new Intl.NumberFormat("en-IN", {
   signDisplay: "always",
 });
 
+//html se select
 const list = document.getElementById("transactionList");
 const form = document.getElementById("transactionForm");
 const status = document.getElementById("status");
@@ -18,6 +20,7 @@ let chart;
 
 form.addEventListener("submit", addTransaction);
 
+//total update
 function updateTotal() {
   const incomeTotal = transactions
     .filter((trx) => trx.type === "income")
@@ -79,7 +82,6 @@ function deleteTransaction(id) {
   transactions.splice(index, 1);
 
   updateTotal();
-  saveTransactions();
   renderList();
 }
 
@@ -99,14 +101,7 @@ function addTransaction(e) {
   this.reset();
 
   updateTotal();
-  saveTransactions();
   renderList();
-}
-
-function saveTransactions() {
-  transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  localStorage.setItem("transactions", JSON.stringify(transactions));
 }
 
 function aggregateTransactions() {
